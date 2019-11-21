@@ -22,6 +22,9 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
 import java.util.*;
@@ -95,7 +98,7 @@ public class LoginActivity extends Application {
         });
 
         webEngine.locationProperty().addListener((observable, oldLocation, newLocation) -> {
-            LOGGER.finer("new location: " + newLocation);
+            LOGGER.finest("new location: " + newLocation);
 
             String fragment = null;
             try {
@@ -123,7 +126,7 @@ public class LoginActivity extends Application {
         // TODO: this functionality is not exported by default and the according
         //       flags can not be set in gradle
         //WebConsoleListener.setDefaultListener((webViewInstance, message, lineNumber, sourceId) ->
-        //        LOGGER.info("Console: [" + sourceId + ":" + lineNumber + "] " + message));
+        //        LOGGER.fine("Console: [" + sourceId + ":" + lineNumber + "] " + message));
 
         Map<String, String> params = new HashMap<>();
         params.put("source", "android");
@@ -159,7 +162,7 @@ public class LoginActivity extends Application {
             List<HttpCookie> cookies = cookieManager.getCookieStore().get(uri);
             for (HttpCookie cookie : cookies) {
                 if(cookie.getName().equals(COOKIE_OAUTH_TOKEN)) {
-                    LOGGER.info("oauth token: " + cookie.getValue());
+                    LOGGER.fine("oauth token: " + cookie.getValue());
                     retrieveAc2dmToken(cookie.getValue());
                     break;
                 }
@@ -236,13 +239,19 @@ public class LoginActivity extends Application {
             return;
         }
 
-        System.out.println(accountId + " " + data.get("Token"));
+        String tokenLine = accountId + " " + data.get("Token");
+        System.out.println(tokenLine);
+        try {
+            Files.write(Paths.get("tokens.txt"), (tokenLine + "\n").getBytes(), StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public class JsBridge {
 
         private void debug(String name, String... args) {
-            LOGGER.fine("JavaScript call to " + name + "(" + String.join(", ", args) + ")");
+            LOGGER.finer("JavaScript call to " + name + "(" + String.join(", ", args) + ")");
         }
 
         @SuppressWarnings("unused")
