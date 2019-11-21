@@ -1,0 +1,25 @@
+plugins {
+    id 'java'
+    id 'application'
+    id 'org.openjfx.javafxplugin' version '0.0.8'
+}
+
+repositories {
+    mavenLocal()
+    jcenter()
+}
+
+dependencies {
+    implementation 'com.google.guava:guava:28.0-jre'
+    testImplementation 'junit:junit:4.12'
+}
+
+application {
+    mainClassName = 'de.blue_beam.token_extractor.LoginActivity'
+}
+
+javafx {
+    version = "11"
+    sdk = "/usr/lib/jvm/java-11-openjdk"
+    modules = [ 'javafx.base', 'javafx.controls', 'javafx.graphics', 'javafx.web', ]
+}
