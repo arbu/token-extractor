@@ -66,6 +66,10 @@ public class LoginActivity extends Application {
     private HttpClient httpClient;
     private String accountId = "";
 
+    public static void main(String[] args) {
+        launch(args);
+    }
+
     @Override
     public void start(Stage primaryStage) throws NoSuchAlgorithmException {
         // allow redirect headers
