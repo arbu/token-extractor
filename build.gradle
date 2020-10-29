@@ -9,7 +9,7 @@ repositories {
 }
 
 application {
-    mainClassName = 'de.blue_beam.token_extractor.App'
+    mainClass = 'de.blue_beam.token_extractor.App'
 }
 
 javafx {
